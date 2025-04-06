@@ -121,18 +121,41 @@ class VectorStoreCreator:
 
 
 if __name__ == "__main__":
-    # Example use case: create vectorstores for multiple document sets with full parameter control
-    db_names = ["zemsta"]
+    # Example use case: create vectorstores for your document collections
+    # Replace these with your own document collection names
+    document_collections = ["your_collection_name"]  # e.g. ["legal_docs", "research_papers", "product_manuals"]
 
-    for db_name in db_names:
-        print(f"Initializing vectorstore and retriever for '{db_name}'...")
+    for collection_name in document_collections:
+        print(f"Initializing vectorstore and retriever for '{collection_name}'...")
+        
+        # Ensure the document directory exists
+        doc_path = f"docs/{collection_name}"
+        if not os.path.exists(doc_path):
+            print(f"WARNING: Directory '{doc_path}' does not exist. Skipping.")
+            continue
+            
+        # Ensure the directory contains files
+        if not os.listdir(doc_path):
+            print(f"WARNING: Directory '{doc_path}' is empty. Skipping.")
+            continue
+        
+        # Initialize the vectorstore creator
         creator = VectorStoreCreator(
-            knowledge_path=f"docs/{db_name}",     # Path to source documents
-            db_name=db_name,                      # Name of the FAISS vectorstore
-            db_path="vectorstores",               # Where to save the vectorstore
-            chunk_size=4000,                      # Max characters per chunk
-            chunk_overlap=300,                    # Overlap between chunks
-            k=3                                   # Number of similar documents to retrieve
+            knowledge_path=doc_path,           # Path to source documents
+            db_name=collection_name,           # Name of the FAISS vectorstore
+            db_path="vectorstores",            # Where to save the vectorstore
+            chunk_size=4000,                   # Max characters per chunk (adjust as needed)
+            chunk_overlap=300,                 # Overlap between chunks (adjust as needed)
+            k=3                                # Number of similar documents to retrieve
         )
-        print(f"Vectorstore and retriever initialized for '{db_name}'")
+        
+        print(f"Vectorstore and retriever initialized for '{collection_name}'")
+        print(f"Vectorstore saved to: vectorstores/{collection_name}")
         print()
+        
+        # Example of how to use the retriever
+        # Uncomment to test retrieval
+        # retriever = creator.load_retriever()
+        # query = "Your search query here"
+        # results = retriever.get_relevant_documents(query)
+        # print(f"Found {len(results)} relevant documents for query: '{query}'")
