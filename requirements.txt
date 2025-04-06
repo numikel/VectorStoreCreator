@@ -1,4 +1,4 @@
-langchain-core==0.1.46
+langchain-core==0.1.53
 langchain-community==0.2.19
 langchain-text-splitters==0.0.1
 
