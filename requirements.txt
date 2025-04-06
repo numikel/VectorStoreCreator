@@ -1,6 +1,6 @@
-langchain-community
-langchain-text-splitters
-langchain-huggingface
+langchain-core==0.1.46
+langchain-community==0.0.21
+langchain-text-splitters==0.0.1
 
 faiss-cpu
 transformers==4.37.2
