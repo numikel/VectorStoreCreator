@@ -122,9 +122,10 @@ class VectorStoreCreator:
 
 if __name__ == "__main__":
     # Example use case: create vectorstores for multiple document sets with full parameter control
-    db_names = ["pan_tadeusz", "zemsta", "w_pustyni_i_w_puszczy"]
+    db_names = ["zemsta"]
 
     for db_name in db_names:
+        print(f"Initializing vectorstore and retriever for '{db_name}'...")
         creator = VectorStoreCreator(
             knowledge_path=f"docs/{db_name}",     # Path to source documents
             db_name=db_name,                      # Name of the FAISS vectorstore
