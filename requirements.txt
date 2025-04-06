@@ -3,7 +3,7 @@ langchain-community==0.0.21
 langchain-text-splitters==0.0.1
 
 faiss-cpu
-transformers==4.37.2
+transformers==4.48.0
 sentence-transformers==2.2.2
 torch
 
