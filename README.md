@@ -75,6 +75,32 @@ retriever = creator.load_retriever()
 
 ---
 
+## 🔄 Updating a vectorstore
+If you make changes to your source documents and want to regenerate a vectorstore, you can use the built-in .update_vectorstore() method.
+
+```python
+creator = VectorStoreCreator(
+    knowledge_path="docs/zemsta",
+    db_name="zemsta",
+    db_path="vectorstores",
+    chunk_size=4000,
+    chunk_overlap=300,
+    k=3
+)
+
+# Option 1: Only rebuild if the vectorstore does not exist
+creator.update_vectorstore()
+
+# Option 2: Force rebuild, even if the vectorstore exists
+creator.update_vectorstore(force_rebuild=True)
+```
+
+This approach is useful when:
+1) you've added or modified documents in the source folder,
+2) you want to refresh the embeddings without manually deleting the FAISS index.
+
+---
+
 ## ✅ Supported file types
 This project supports most document formats via LangChain loaders:
 

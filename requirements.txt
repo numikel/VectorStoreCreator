@@ -3,8 +3,8 @@ langchain-text-splitters
 langchain-huggingface
 
 faiss-cpu
-transformers
-sentence-transformers
+transformers==4.37.2
+sentence-transformers==2.2.2
 torch
 
 unstructured
