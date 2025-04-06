@@ -79,6 +79,26 @@ class VectorStoreCreator:
             )
 
         return vectordb
+    
+    def update_vectorstore(self, force_rebuild: bool = False):
+        """
+        Updates the existing vectorstore based on changes in the source documents.
+        If force_rebuild is True, the vectorstore will be deleted and rebuilt from scratch.
+        """
+
+        full_db_path = os.path.join(self.db_path, self.db_name)
+
+        if force_rebuild or not os.path.exists(full_db_path):
+            print(f"[RAGDocumentProcessor] {'Rebuilding' if force_rebuild else 'Creating'} vectorstore...")
+            documents = self._load_documents()
+            documents = self._chunk_documents(documents)
+            vectordb = FAISS.from_documents(documents, embedding=self.embedding_model)
+            vectordb.save_local(full_db_path)
+            self.vectorstore = vectordb
+            self.retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k": self.k})
+            print("[RAGDocumentProcessor] Vectorstore updated successfully.")
+        else:
+            print("[RAGDocumentProcessor] No changes detected or rebuild not requested. Using existing vectorstore.")
 
     def load_vectordb(self):
         """Returns the loaded FAISS vectorstore object."""
