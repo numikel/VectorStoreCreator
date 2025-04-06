@@ -27,6 +27,7 @@ class VectorStoreCreator:
         :param chunk_overlap: Overlap in characters between consecutive chunks.
         :param k: Number of top similar documents to retrieve.
         """
+        os.makedirs(db_path, exist_ok=True)
         if not os.path.exists(knowledge_path):
             raise FileNotFoundError(f"Directory '{knowledge_path}' does not exist.")
 
@@ -55,6 +56,12 @@ class VectorStoreCreator:
 
     def _load_documents(self):
         print("[RAGDocumentProcessor] Loading documents...")
+
+        # Sprawdź, czy folder z dokumentami jest pusty
+        if not os.listdir(self.knowledge_path):
+            print(f"[RAGDocumentProcessor] WARNING: Folder '{self.knowledge_path}' is empty!")
+            return []
+
         return self.loader.load()
 
     def _chunk_documents(self, documents):
@@ -67,6 +74,10 @@ class VectorStoreCreator:
         if not os.path.exists(full_db_path):
             print("[RAGDocumentProcessor] Creating new vectorstore...")
             documents = self._load_documents()
+
+            if not documents:
+                raise ValueError(f"No documents in '{self.knowledge_path}'. Folder is empty or documents could not be loaded.")
+
             documents = self._chunk_documents(documents)
             vectordb = FAISS.from_documents(documents, embedding=self.embedding_model)
             vectordb.save_local(full_db_path)
