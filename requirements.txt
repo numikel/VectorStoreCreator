@@ -1,0 +1,20 @@
+langchain
+langchain-community
+langchain-huggingface
+langchain-text-splitters
+faiss-cpu
+
+transformers
+sentence-transformers
+torch
+
+# Document loading
+unstructured
+pdfminer.six
+python-docx
+python-pptx
+tqdm
+
+# File type detection
+python-magic-bin ; sys_platform == "win32"
+python-magic ; sys_platform != "win32"
